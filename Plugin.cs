@@ -13,6 +13,10 @@ namespace GoofyWalk
         {
             HarmonyPatches.ApplyHarmonyPatches();
             GorillaTagger.OnPlayerSpawned(Init);
+
+            Hashtable table = new Hashtable();
+            table.Add("GoofyWalkVersion", PluginInfo.GUID);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(table);
         }
 
         void Init()
