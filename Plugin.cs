@@ -1,6 +1,8 @@
 ﻿using BepInEx;
 using UnityEngine;
 using GorillaLocomotion;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Photon.Pun;
 
 namespace GoofyWalk
 {
@@ -8,11 +10,26 @@ namespace GoofyWalk
     public class Plugin : BaseUnityPlugin
     {
         bool inRoom = false;
+        bool overrideChoice = false;
+
+        void OnEnable()
+        {
+            overrideChoice = false;
+        }
+
+        void OnDisable()
+        {
+            overrideChoice = true;
+        }
 
         void Start()
         {
             HarmonyPatches.ApplyHarmonyPatches();
             GorillaTagger.OnPlayerSpawned(Init);
+
+            Hashtable table = new Hashtable();
+            table.Add("GoofyWalkVersion", PluginInfo.GUID);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(table);
         }
 
         void Init()
@@ -33,7 +50,7 @@ namespace GoofyWalk
 
         void Update()
         {
-            if (inRoom)
+            if (!overrideChoice && inRoom)
             {
                 Vector3 eulerAngles = GTPlayer.Instance.headCollider.transform.rotation.eulerAngles;
                 float x = Mathf.Clamp((eulerAngles.x > 180f) ? (eulerAngles.x - 360f) : eulerAngles.x, -90f, 90f);
