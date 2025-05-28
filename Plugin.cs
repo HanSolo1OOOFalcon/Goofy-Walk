@@ -28,7 +28,7 @@ namespace GoofyWalk
             GorillaTagger.OnPlayerSpawned(Init);
 
             Hashtable table = new Hashtable();
-            table.Add("GoofyWalkVersion", PluginInfo.GUID);
+            table.Add("GoofyWalkVersion", PluginInfo.Version);
             PhotonNetwork.LocalPlayer.SetCustomProperties(table);
         }
 
